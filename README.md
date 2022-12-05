@@ -1,6 +1,6 @@
 # qr_code
 
-A new Flutter project.
+It is QR_Code Scanner application
 
 ## Getting Started
 
