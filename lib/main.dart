@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-void main() => runApp(
-     MaterialApp(debugShowCheckedModeBanner: false, home: MyHome()));
+void main() =>
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyHome()));
 
 class MyHome extends StatelessWidget {
   const MyHome({Key? key}) : super(key: key);
@@ -15,9 +15,11 @@ class MyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('QrCode Scanner'),
-      backgroundColor: Colors.black,
-      centerTitle: true,),
+      appBar: AppBar(
+        title: const Text('QrCode Scanner'),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -26,8 +28,7 @@ class MyHome extends StatelessWidget {
             ));
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.black)
-          ),
+              backgroundColor: MaterialStatePropertyAll(Colors.black)),
           child: const Text('qrView'),
         ),
       ),
@@ -64,7 +65,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex: 1, child: _buildQrView(context)),
+          Expanded(flex: 5, child: _buildQrView(context)),
           Expanded(
             flex: 1,
             child: FittedBox(
@@ -74,11 +75,14 @@ class _QRViewExampleState extends State<QRViewExample> {
                 children: <Widget>[
                   if (result != null)
                     GestureDetector(
-                        child: Text(
-                          'Click for Result...',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Text(
+                            'Click for Result...',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         onTap: () {
@@ -97,84 +101,91 @@ class _QRViewExampleState extends State<QRViewExample> {
                   // fontWeight: FontWeight.bold), )
 
                   else
-                    const Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(Colors.black)
-                            ),
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
+                    // const Text('Scan a code'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: IconButton(
+                              // icon: Icon(Icons.flash_on),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(Colors.black)),
+                              onPressed: () async {
+                                await controller?.toggleFlash();
+                                setState(() {});
                               },
-                            )),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(Colors.black)
-                            ),
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Camera facing ${describeEnum(snapshot.data!)}');
-                                } else {
-                                  return const Text('loading');
-                                }
+                              icon: FutureBuilder(
+                                future: controller?.getFlashStatus(),
+                                builder: (context, snapshot) {
+                                  return Icon(Icons.flash_on_outlined);
+
+                                  // ('Flash: ${snapshot.data}');
+                                },
+                              )),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: IconButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(Colors.black)),
+                              onPressed: () async {
+                                await controller?.flipCamera();
+                                setState(() {});
                               },
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(Colors.black)
-                          ),
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('pause',
-                              style: TextStyle(fontSize: 20)),
+                              icon: FutureBuilder(
+                                future: controller?.getCameraInfo(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data != null) {
+                                    return Icon(Icons.camera_alt);
+                                    //SnackBar(content :Text(
+                                    //'Camera facing ${describeEnum(snapshot.data!)}'),
+
+                                  } else {
+                                    return SnackBar(content: Text('loading'));
+                                  }
+                                },
+                              )),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(Colors.black)
+                        // ]
+                        //  Row(
+                        //    mainAxisAlignment: MainAxisAlignment.end,
+                        //  crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: IconButton(
+                            icon: Icon(Icons.stop_rounded),
+
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.black)),
+                            onPressed: () async {
+                              await controller?.pauseCamera();
+                            },
+                            //child: const Text('pause',
+                            //   style: TextStyle(fontSize: 20)),
                           ),
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('resume',
-                              style: TextStyle(fontSize: 20)),
                         ),
-                      )
-                    ],
-                  ),
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: IconButton(
+                            icon: Icon(Icons.play_arrow_outlined),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.black)),
+                            onPressed: () async {
+                              await controller?.resumeCamera();
+                            },
+                            //child: const Text('resume',
+                            // style: TextStyle(fontSize: 20)),
+                          ),
+                        )
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -251,11 +262,11 @@ class ResultScreen extends StatelessWidget {
         padding: const EdgeInsets.all(28.0),
         child: Container(
           child: Center(
-            child: Text(
+            child: SelectableText(
               'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',
               maxLines: 10,
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 15,
               ),
             ),
           ),
