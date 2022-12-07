@@ -32,6 +32,9 @@ dependencies:
   flutter:
     sdk: flutter
   qr_code_scanner: ^1.0.1
+  intl: ^0.17.0
+  flutter_holo_date_picker: ^1.1.0
+  xml:
 
 
   # The following adds the Cupertino Icons font to your application.

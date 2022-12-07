@@ -1,36 +1,48 @@
+
 import 'dart:developer';
-import 'dart:io';
+
+import 'dart:html';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code/age_calculator.dart';
+import 'package:qr_code/personal_details_form.dart';
+import 'package:qr_code/qr_detalis.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:xml/xml.dart';
 
 void main() =>
-    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyHome()));
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: DetailsForm()));
 
 class MyHome extends StatelessWidget {
   const MyHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('QrCode Scanner'),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const QRViewExample(),
-            ));
-          },
-          style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.black)),
-          child: const Text('qrView'),
-        ),
+      body: Column(
+        children: [
+          Container(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const QRViewExample(),
+                ));
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.black)),
+              child: const Text('qrView'),
+            ),
+          ),
+        // Text(xml.getElement('Xmlmodel')!.firstElementChild!.getElement('name')!.text)
+        ],
       ),
     );
   }
@@ -46,6 +58,7 @@ class QRViewExample extends StatefulWidget {
 class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
+  
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -54,7 +67,8 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
+
+    if (Platform.supportsSimd) {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
