@@ -13,7 +13,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:xml/xml.dart';
 
 void main() =>
-    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: DetailsForm()));
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyHome()));
 
 class MyHome extends StatelessWidget {
   const MyHome({Key? key}) : super(key: key);
@@ -103,10 +103,10 @@ class _QRViewExampleState extends State<QRViewExample> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ResultScreen(
-                                  result: result,
+                                builder: (context) =>DetailsForm(), //ResultScreen(
+                                  //result: result,
                                 ),
-                              ));
+                              );
                         })
                   //Text(
                   //   'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',)

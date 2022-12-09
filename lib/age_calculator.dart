@@ -34,11 +34,11 @@ class _AgeCalculatorState extends State<AgeCalculator> {
               locale: DatePicker.localeFromString('en'),
               onChange: (DateTime newDate, _) {
                 setState(() {
-                  selectedDate = newDate;
+                  //selectedDate = newDate;
 
                 });
-                print(DateTime.now().year-selectedDate.year);
-                print(documents.toString());
+               //print(DateTime.now().year-selectedDate.year);
+               // print(documents.toString());
               },
               pickerTheme: const DateTimePickerTheme(
                 itemTextStyle:
@@ -53,8 +53,7 @@ class _AgeCalculatorState extends State<AgeCalculator> {
         //  ),
 
            Padding(
-            padding: const EdgeInsets.all(28.0),
-            child: Text(" Age :${DateTime.now().year-selectedDate.year}"),
+            padding: const EdgeInsets.all(28.0), //child: Text(" Age :${DateTime.now().year-selectedDate.year}"),
            ),
 
 

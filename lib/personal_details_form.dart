@@ -23,6 +23,11 @@ class _DetailsFormState extends State<DetailsForm> {
 
   @override
   Widget build(BuildContext context) {
+    var root = XmlDocument.parse(sample).getElement('PrintLetterBarcodeData');
+    var rootGenres = root
+        ?.findElements('PrintLetterBarcodeData')
+        .map<PrintLetterBarcodeData>((e) => PrintLetterBarcodeData.fromElement(e))
+        .toList();
     var Formkey;
 
 
@@ -62,23 +67,23 @@ class _DetailsFormState extends State<DetailsForm> {
                           ),
                           child: TextFormField(
                             decoration: InputDecoration(
-                                border: InputBorder.none, hintText: 'Name'),
+                                border: InputBorder.none, hintText: PrintLetterBarcodeData.fromElement(root!).name.toString()),
                           ),
                         ),
-                       AgeCalculator(),
-                       // Container(
-                       //   decoration: BoxDecoration(
-                         //   borderRadius: BorderRadius.circular(30),
-                      //      color: Colors.white70,
-                       //   ),
-                      //    child: TextFormField(
-                       //     keyboardType: TextInputType.datetime,
-                        //    decoration: InputDecoration(
-                          //    border: InputBorder.none,
-                          //    hintText: 'DOB',
-                          //  ),
-                         // ),
-                       // ),
+                      // AgeCalculator(),
+                        Container(
+                         decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white70,
+                          ),
+                          child: TextFormField(
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            hintText: PrintLetterBarcodeData.fromElement(root!).yob.toString(),
+                           ),
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
@@ -86,7 +91,7 @@ class _DetailsFormState extends State<DetailsForm> {
                           ),
                           child: TextFormField(
                             decoration: InputDecoration(
-                                border: InputBorder.none, hintText: 'Gender'),
+                                border: InputBorder.none, hintText: PrintLetterBarcodeData.fromElement(root!).gender.toString()),
                           ),
                         ),
                         Container(
