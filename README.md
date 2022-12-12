@@ -1,6 +1,6 @@
 # qr_code
 
-It is QR_Code Scanner application
+It is Aadhar QR_Code Scanner application
 
 ## Getting Started
 
