@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:qr_code/personal_details_form.dart';
+import 'package:qr_code/qr_detalis.dart';
 import 'package:qr_code/xml_model.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -266,6 +267,8 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     var sample = {result.code}.first;
     var root = XmlDocument.parse(sample).getElement('PrintLetterBarcodeData');
     var rootGenres = root
@@ -276,7 +279,9 @@ class ResultScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(28.0),
-        child: Column(children: [
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: [
           // Container(
           // child: SelectableText(
           //'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',
@@ -351,7 +356,7 @@ class ResultScreen extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText:
+                                    hintText:
                                     PrintLetterBarcodeData.fromElement(root!)
                                         .gender
                                         .toString()),
@@ -369,7 +374,24 @@ class ResultScreen extends StatelessWidget {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            DateTime dateTimeCreatedAt = DateTime.parse('${PrintLetterBarcodeData.fromElement(root!)
+                                .yob.toString()}-01-01');
+                            DateTime dateTimeNow = DateTime.now();
+                            final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
+                            if(differenceInDays>23){
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => QrModel(),));
+                              print(differenceInDays);
+                            }
+                            else{
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => QmodelF(),));
+                              print(differenceInDays);
+
+                            }
+
+                          },
                           child: Text('Submit'),
                         ),
                       ],
