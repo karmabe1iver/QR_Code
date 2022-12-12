@@ -1,13 +1,11 @@
-
 import 'dart:developer';
-
-import 'dart:html';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code/age_calculator.dart';
+
 import 'package:qr_code/personal_details_form.dart';
-import 'package:qr_code/qr_detalis.dart';
+import 'package:qr_code/xml_model.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:xml/xml.dart';
@@ -20,37 +18,33 @@ class MyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('QrCode Scanner'),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Container(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const QRViewExample(),
-                ));
-              },
-              style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.black)),
-              child: const Text('qrView'),
-            ),
+      body: Container(
+        child: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => QRViewExample(),
+              ));
+            },
+            style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Colors.black)),
+            child: const Text('qrView'),
           ),
-        // Text(xml.getElement('Xmlmodel')!.firstElementChild!.getElement('name')!.text)
-        ],
+        ),
       ),
+
+      // Text(xml.getElement('Xmlmodel')!.firstElementChild!.getElement('name')!.text)
     );
   }
 }
 
 class QRViewExample extends StatefulWidget {
-  const QRViewExample({Key? key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
 }
@@ -58,7 +52,6 @@ class QRViewExample extends StatefulWidget {
 class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
-  
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -68,7 +61,7 @@ class _QRViewExampleState extends State<QRViewExample> {
   void reassemble() {
     super.reassemble();
 
-    if (Platform.supportsSimd) {
+    if (Platform.isAndroid) {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
@@ -101,12 +94,14 @@ class _QRViewExampleState extends State<QRViewExample> {
                         ),
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>DetailsForm(), //ResultScreen(
-                                  //result: result,
-                                ),
-                              );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultScreen(
+                                result: result,
+                              ), //ResultScreen(
+                              //result: result,
+                            ),
+                          );
                         })
                   //Text(
                   //   'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',)
@@ -124,9 +119,9 @@ class _QRViewExampleState extends State<QRViewExample> {
                           margin: const EdgeInsets.all(8),
                           child: IconButton(
                               // icon: Icon(Icons.flash_on),
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.black)),
+                              //style: ButtonStyle(
+                              // backgroundColor:
+                              // MaterialStatePropertyAll(Colors.black)),
                               onPressed: () async {
                                 await controller?.toggleFlash();
                                 setState(() {});
@@ -143,9 +138,9 @@ class _QRViewExampleState extends State<QRViewExample> {
                         Container(
                           margin: const EdgeInsets.all(8),
                           child: IconButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.black)),
+                              // style: ButtonStyle(
+                              // backgroundColor:
+                              // MaterialStatePropertyAll(Colors.black)),
                               onPressed: () async {
                                 await controller?.flipCamera();
                                 setState(() {});
@@ -174,9 +169,9 @@ class _QRViewExampleState extends State<QRViewExample> {
                           child: IconButton(
                             icon: Icon(Icons.stop_rounded),
 
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Colors.black)),
+                            //   style: ButtonStyle(
+                            //backgroundColor:
+                            // MaterialStatePropertyAll(Colors.black)),
                             onPressed: () async {
                               await controller?.pauseCamera();
                             },
@@ -188,9 +183,9 @@ class _QRViewExampleState extends State<QRViewExample> {
                           margin: const EdgeInsets.all(8),
                           child: IconButton(
                             icon: Icon(Icons.play_arrow_outlined),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Colors.black)),
+                            //style: ButtonStyle(
+                            // backgroundColor:
+                            //MaterialStatePropertyAll(Colors.black)),
                             onPressed: () async {
                               await controller?.resumeCamera();
                             },
@@ -271,20 +266,122 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var sample = {result.code}.first;
+    var root = XmlDocument.parse(sample).getElement('PrintLetterBarcodeData');
+    var rootGenres = root
+        ?.findElements('PrintLetterBarcodeData')
+        .map<PrintLetterBarcodeData>(
+            (e) => PrintLetterBarcodeData.fromElement(e))
+        .toList();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(28.0),
-        child: Container(
-          child: Center(
-            child: SelectableText(
-              'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',
-              maxLines: 10,
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            ),
-          ),
-        ),
+        child: Column(children: [
+          // Container(
+          // child: SelectableText(
+          //'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}',
+          // maxLines: 10,
+          // style: TextStyle(
+          // fontSize: 15,
+          //  ),
+          // ),
+          //  ),
+          Card(
+              elevation: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RichText(
+                        textScaleFactor: 1,
+                        text: TextSpan(
+                            text: 'Entry ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 35,
+                                color: Colors.black),
+                            children: [
+                              TextSpan(
+                                  text: 'Person Details',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 25,
+                                      color: Colors.grey))
+                            ])),
+                    Form(
+                        child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white70,
+                          ),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText:
+                                    PrintLetterBarcodeData.fromElement(root!)
+                                        .name
+                                        .toString()),
+                          ),
+                        ),
+                        // AgeCalculator(),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white70,
+                          ),
+                          child: TextFormField(
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText:
+                                  PrintLetterBarcodeData.fromElement(root!)
+                                      .yob
+                                      .toString(),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white70,
+                          ),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText:
+                                    PrintLetterBarcodeData.fromElement(root!)
+                                        .gender
+                                        .toString()),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white70,
+                          ),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Phone number'),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Text('Submit'),
+                        ),
+                      ],
+                    )),
+                    //Text(" Age :${DateTime.now().year- select.year}"),
+                    // Text(" Age :${DateTime.now().year-selectedDate.year}"),
+
+                    // Text(" Age :${DateTime.now().year - _yearofborn.hashCode}")
+                  ],
+                ),
+              )),
+        ]),
       ),
     );
   }

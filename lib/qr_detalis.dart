@@ -22,7 +22,7 @@ class QrModel extends StatelessWidget {
             itemBuilder: (context, index){
           return Column(
             children: [
-              //Text(documents.toString())
+              //ext(documents.toString())
             ],
           );
         }),

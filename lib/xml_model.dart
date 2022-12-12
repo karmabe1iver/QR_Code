@@ -1,9 +1,18 @@
 
 
+
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:xml/xml.dart';
+import 'package:qr_code/main.dart';
 
-var sample ='''describeEnum(result!.format)  {result!.code} '''; //'''
+
+
+
+var sample ;
+
+//'''
 //<?xml version="1.0" encoding="UTF-8"?>
 //<PrintLetterBarcodeData uid="468308090468" name="Joya Kuriakose" gender="F" yob="1995" co="D/O: Kuriakose K P"
  //house="Keerankuzhy House"
@@ -14,6 +23,8 @@ var sample ='''describeEnum(result!.format)  {result!.code} '''; //'''
  //state="Kerala"
  //pc="683565"/>
 //''';
+
+
 
 class PrintLetterBarcodeData {
   PrintLetterBarcodeData( this.name, this.gender, this.yob, this.co, this.house, this.street,

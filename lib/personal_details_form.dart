@@ -1,16 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code/age_calculator.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:qr_code/xml_model.dart';
+import 'package:qr_code_scanner/src/types/barcode.dart';
 import 'package:xml/xml.dart';
 
-
 class DetailsForm extends StatefulWidget {
-  DateTime? selectedDate;
 
-  DetailsForm({Key? key, this.selectedDate}) : super(key: key);
+
+
+  DetailsForm({Key? key, Barcode, result,})
+      : super(key: key);
 
   @override
   State<DetailsForm> createState() => _DetailsFormState();
@@ -20,17 +24,17 @@ class _DetailsFormState extends State<DetailsForm> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
+    var result;
+    var sample= {result.code}.first;
     var root = XmlDocument.parse(sample).getElement('PrintLetterBarcodeData');
     var rootGenres = root
         ?.findElements('PrintLetterBarcodeData')
-        .map<PrintLetterBarcodeData>((e) => PrintLetterBarcodeData.fromElement(e))
+        .map<PrintLetterBarcodeData>(
+            (e) => PrintLetterBarcodeData.fromElement(e))
         .toList();
     var Formkey;
-
-
 
     return Scaffold(
       body: Card(
@@ -67,12 +71,16 @@ class _DetailsFormState extends State<DetailsForm> {
                           ),
                           child: TextFormField(
                             decoration: InputDecoration(
-                                border: InputBorder.none, hintText: PrintLetterBarcodeData.fromElement(root!).name.toString()),
+                                border: InputBorder.none,
+                                hintText:
+                                    PrintLetterBarcodeData.fromElement(root!)
+                                        .name
+                                        .toString()),
                           ),
                         ),
-                      // AgeCalculator(),
+                        // AgeCalculator(),
                         Container(
-                         decoration: BoxDecoration(
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.white70,
                           ),
@@ -80,8 +88,11 @@ class _DetailsFormState extends State<DetailsForm> {
                             keyboardType: TextInputType.datetime,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                            hintText: PrintLetterBarcodeData.fromElement(root!).yob.toString(),
-                           ),
+                              hintText:
+                                  PrintLetterBarcodeData.fromElement(root!)
+                                      .yob
+                                      .toString(),
+                            ),
                           ),
                         ),
                         Container(
@@ -91,7 +102,11 @@ class _DetailsFormState extends State<DetailsForm> {
                           ),
                           child: TextFormField(
                             decoration: InputDecoration(
-                                border: InputBorder.none, hintText: PrintLetterBarcodeData.fromElement(root!).gender.toString()),
+                                border: InputBorder.none,
+                                hintText:
+                                    PrintLetterBarcodeData.fromElement(root!)
+                                        .gender
+                                        .toString()),
                           ),
                         ),
                         Container(
@@ -106,9 +121,7 @@ class _DetailsFormState extends State<DetailsForm> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-
-                          },
+                          onPressed: () {},
                           child: Text('Submit'),
                         ),
                       ],
